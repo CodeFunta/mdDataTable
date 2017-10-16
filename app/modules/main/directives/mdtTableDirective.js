@@ -129,6 +129,7 @@
                 selectableRows: '=',
                 alternateHeaders: '=',
                 deleteRowCallback: '&',
+                selectedRowCallback: '&',
                 clickedRowCallback: '&',
                 saveRowCallback: '&',
                 animateSortIcon: '=',
