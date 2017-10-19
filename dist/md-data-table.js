@@ -402,13 +402,13 @@
         .module('mdDataTable')
         .directive('mdtTable', mdtTableDirective);
 }());
-(function(){
+(function () {
     'use strict';
 
     mdtAjaxPaginationHelperFactory.$inject = ['ColumnFilterFeature', 'ColumnSortFeature', 'PaginatorTypeProvider', '_'];
-    function mdtAjaxPaginationHelperFactory(ColumnFilterFeature, ColumnSortFeature, PaginatorTypeProvider, _){
+    function mdtAjaxPaginationHelperFactory(ColumnFilterFeature, ColumnSortFeature, PaginatorTypeProvider, _) {
 
-        function mdtAjaxPaginationHelper(params){
+        function mdtAjaxPaginationHelper(params) {
             this.paginatorType = PaginatorTypeProvider.AJAX;
 
             this.dataStorage = params.dataStorage;
@@ -418,13 +418,13 @@
             this.mdtRowPaginatorNoResultsMessage = params.mdtRowPaginatorNoResultsMessage || 'No results.';
             this.mdtTriggerRequest = params.mdtTriggerRequest;
 
-            if(params.paginationSetting &&
+            if (params.paginationSetting &&
                 params.paginationSetting.hasOwnProperty('rowsPerPageValues') &&
-                params.paginationSetting.rowsPerPageValues.length > 0){
+                params.paginationSetting.rowsPerPageValues.length > 0) {
 
                 this.rowsPerPageValues = params.paginationSetting.rowsPerPageValues;
-            }else{
-                this.rowsPerPageValues = [10,20,30,50,100];
+            } else {
+                this.rowsPerPageValues = [10, 20, 30, 50, 100];
             }
 
             this.rowsPerPage = this.rowsPerPageValues[0];
@@ -438,94 +438,97 @@
             //this.fetchPage(this.page);
 
             //triggering ajax call manually
-            if(this.mdtTriggerRequest) {
+            if (this.mdtTriggerRequest) {
                 params.mdtTriggerRequest({
                     loadPageCallback: this.fetchPage.bind(this)
                 });
             }
         }
 
-        mdtAjaxPaginationHelper.prototype.getStartRowIndex = function(){
-            return (this.page-1) * this.rowsPerPage;
+        mdtAjaxPaginationHelper.prototype.getStartRowIndex = function () {
+            return (this.page - 1) * this.rowsPerPage;
         };
 
-        mdtAjaxPaginationHelper.prototype.getEndRowIndex = function(){
+        mdtAjaxPaginationHelper.prototype.getEndRowIndex = function () {
             var lastItem = this.getStartRowIndex() + this.rowsPerPage - 1;
 
-            if(this.totalResultCount < lastItem){
+            if (this.totalResultCount < lastItem) {
                 return this.totalResultCount - 1;
             }
 
             return lastItem;
         };
 
-        mdtAjaxPaginationHelper.prototype.getTotalRowsCount = function(){
+        mdtAjaxPaginationHelper.prototype.getTotalRowsCount = function () {
             return this.totalResultCount;
         };
 
-        mdtAjaxPaginationHelper.prototype.getRows = function(){
+        mdtAjaxPaginationHelper.prototype.getRows = function () {
             return this.dataStorage.storage;
         };
 
-        mdtAjaxPaginationHelper.prototype.previousPage = function(){
+        mdtAjaxPaginationHelper.prototype.previousPage = function () {
             var that = this;
-            if(this.hasPreviousPage()){
-                this.fetchPage(this.page-1).then(function(){
-                    that.page--;
+            if (this.hasPreviousPage()) {
+                this.fetchPage(this.page - 1).then(function () {
+
                 });
             }
         };
 
-        mdtAjaxPaginationHelper.prototype.nextPage = function(){
+        mdtAjaxPaginationHelper.prototype.nextPage = function () {
             var that = this;
-            if(this.hasNextPage()){
-                this.fetchPage(this.page+1).then(function(){
-                    that.page++;
+            if (this.hasNextPage()) {
+                this.fetchPage(this.page + 1).then(function () {
+
                 });
             }
         };
 
-        mdtAjaxPaginationHelper.prototype.getFirstPage = function(){
-            this.page = 1;
-
-            this.fetchPage(this.page);
+        mdtAjaxPaginationHelper.prototype.getFirstPage = function () {
+            this.fetchPage(1);
         };
 
-        mdtAjaxPaginationHelper.prototype.hasNextPage = function(){
+        mdtAjaxPaginationHelper.prototype.hasNextPage = function () {
             return this.page < this.totalPages;
         };
 
-        mdtAjaxPaginationHelper.prototype.hasPreviousPage = function(){
+        mdtAjaxPaginationHelper.prototype.hasPreviousPage = function () {
             return this.page > 1;
         };
 
-        mdtAjaxPaginationHelper.prototype.fetchPage = function(page){
+        mdtAjaxPaginationHelper.prototype.fetchPage = function (page) {
+            if (page) {
+                this.page = page;
+            } else {
+                page = this.page;
+            }
             this.isLoading = true;
 
             var that = this;
 
-            var callbackArguments = {page: page, pageSize: this.rowsPerPage, options: {}};
+            var callbackArguments = { page: page, pageSize: this.rowsPerPage, options: {} };
 
             ColumnFilterFeature.appendAppliedFiltersToCallbackArgument(this.dataStorage, callbackArguments);
             ColumnSortFeature.appendSortedColumnToCallbackArgument(this.dataStorage, callbackArguments);
 
             return this.paginatorFunction(callbackArguments)
-                .then(function(data){
+                .then(function (data) {
                     that.dataStorage.storage = [];
                     that.setRawDataToStorage(that, data.results, that.rowOptions['table-row-id-key'], that.rowOptions['column-keys'], that.rowOptions);
                     that.totalResultCount = data.totalResultCount;
                     that.totalPages = Math.ceil(data.totalResultCount / that.rowsPerPage);
 
-                    if(that.totalResultCount == 0){
+                    if (that.totalResultCount == 0) {
                         that.isNoResults = true;
-                    }else{
+                    } else {
                         that.isNoResults = false;
                     }
 
                     that.isLoadError = false;
                     that.isLoading = false;
 
-                }, function(){
+                }, function () {
                     that.dataStorage.storage = [];
 
                     that.isLoadError = true;
@@ -534,14 +537,14 @@
                 });
         };
 
-        mdtAjaxPaginationHelper.prototype.setRawDataToStorage = function(that, data, tableRowIdKey, columnKeys, rowOptions){
+        mdtAjaxPaginationHelper.prototype.setRawDataToStorage = function (that, data, tableRowIdKey, columnKeys, rowOptions) {
             var rowId;
             var columnValues = [];
-            _.each(data, function(row){
+            _.each(data, function (row) {
                 rowId = _.get(row, tableRowIdKey);
                 columnValues = [];
 
-                _.each(columnKeys, function(columnKey){
+                _.each(columnKeys, function (columnKey) {
                     //TODO: centralize adding column values into one place.
                     // Duplication occurs at mdtCellDirective's link function.
                     // Duplication in mdtTableDirective `_addRawDataToStorage` method!
@@ -561,14 +564,14 @@
             });
         };
 
-        mdtAjaxPaginationHelper.prototype.setRowsPerPage = function(rowsPerPage){
+        mdtAjaxPaginationHelper.prototype.setRowsPerPage = function (rowsPerPage) {
             this.rowsPerPage = rowsPerPage;
 
             this.getFirstPage();
         };
 
         return {
-            getInstance: function(dataStorage, isEnabled, paginatorFunction, rowOptions){
+            getInstance: function (dataStorage, isEnabled, paginatorFunction, rowOptions) {
                 return new mdtAjaxPaginationHelper(dataStorage, isEnabled, paginatorFunction, rowOptions);
             }
         };
@@ -2068,168 +2071,6 @@
 (function() {
     'use strict';
 
-    mdtColumnSelectorDirective.$inject = ['ColumnSelectorFeature', 'ColumnFilterFeature', 'PaginatorTypeProvider'];
-    function mdtColumnSelectorDirective(ColumnSelectorFeature, ColumnFilterFeature, PaginatorTypeProvider){
-        return{
-            restrict: 'E',
-            templateUrl: '/main/templates/mdtColumnSelector.html',
-            scope: true,
-            link: function($scope, element){
-                ColumnSelectorFeature.positionElement(element);
-
-                $scope.headerRowsData = _.map($scope.dataStorage.header, function(item){
-                    //excluded content should also be in, since we use the index of the array to apply the changes. Do not exclude them.
-
-                    return {
-                        columnName: item.columnName,
-                        isVisible: item.columnSelectorFeature.isVisible,
-                        isExcluded: item.columnSelectorFeature.isExcluded
-                    };
-                });
-
-                //destroying scope doesn't remove element, since it belongs to the body directly
-                $scope.$on('$destroy', function(){
-                    element.remove();
-                });
-
-                $scope.checked = function (item) {
-                    return item.isVisible;
-                };
-
-                $scope.toggle = function (item) {
-                    item.isVisible = !item.isVisible;
-                };
-
-                $scope.selectAll = function($event){
-                    $event.preventDefault();
-
-                    _.each($scope.headerRowsData, function(item){
-                        if(item.isExcluded){
-                            return;
-                        }
-
-                        item.isVisible = true;
-                    });
-                };
-
-                $scope.clearAll = function($event){
-                    $event.preventDefault();
-
-                    _.each($scope.headerRowsData, function(item){
-                        if(item.isExcluded){
-                            return;
-                        }
-
-                        item.isVisible = false;
-                    });
-                };
-
-                $scope.isAllSelected = function(){
-                    var result = _.find($scope.headerRowsData, function(item){
-                        if(item.isExcluded){
-                            return false;
-                        }
-
-                        return item.isVisible === false;
-                    });
-
-                    return result ? false : true;
-                };
-
-                $scope.isNothingSelected = function(){
-                    var result = _.find($scope.headerRowsData, function(item){
-                        if(item.isExcluded){
-                            return false;
-                        }
-
-                        return item.isVisible === true;
-                    });
-
-                    return result ? false : true;
-                };
-
-                $scope.confirmCallback = function(params){
-                    var paginator = params.paginator;
-                    var isAnyResetHappened = false;
-
-                    _.each($scope.dataStorage.header, function(item, index){
-                        item.columnSelectorFeature.isVisible = $scope.headerRowsData[index].isVisible;
-
-                        if(!item.columnSelectorFeature.isVisible){
-                            var result = ColumnFilterFeature.resetFiltersForColumn($scope.dataStorage, index);
-
-                            if(result){
-                                isAnyResetHappened = true;
-                            }
-                        }
-                    });
-
-                    $scope.columnSelectorFeature.isActive = false;
-
-                    if(isAnyResetHappened){
-                        if(paginator.paginatorType === PaginatorTypeProvider.AJAX){
-                            paginator.getFirstPage();
-                        }else{
-                            // no support for non-ajax yet
-                        }
-                    }
-                };
-
-                $scope.cancelCallback = function(){
-                    $scope.columnSelectorFeature.isActive = false;
-                };
-            }
-        }
-    }
-
-    angular
-        .module('mdDataTable')
-        .directive('mdtColumnSelector', mdtColumnSelectorDirective);
-})();
-(function(){
-    'use strict';
-
-    mdtSortingIconsDirective.$inject = ['ColumnSortDirectionProvider'];
-    function mdtSortingIconsDirective(ColumnSortDirectionProvider){
-        return {
-            restrict: 'E',
-            templateUrl: '/main/templates/cells/generateSortingIcons.html',
-            scope: {
-                data: '=',
-                size: '@'
-            },
-            link: function($scope){
-                $scope.ColumnSortDirectionProvider = ColumnSortDirectionProvider;
-            }
-        };
-    }
-
-    angular
-        .module('mdDataTable')
-        .directive('mdtSortingIcons', mdtSortingIconsDirective);
-}());
-(function(){
-    'use strict';
-
-    /**
-     * @name ColumnSortDirectionProvider
-     * @returns possible values for different type of paginators
-     *
-     * @describe Representing the possible paginator types.
-     */
-    var ColumnSortDirectionProvider = {
-        ASC : 'asc',
-        DESC : 'desc'
-    };
-
-    angular
-        .module('mdDataTable')
-        .value('ColumnSortDirectionProvider', ColumnSortDirectionProvider);
-})();
-
-(function() {
-    'use strict';
-
     mdtCheckboxColumnFilterDirective.$inject = ['_', 'ColumnFilterFeature', 'ColumnSortFeature', 'ColumnSortDirectionProvider'];
     function mdtCheckboxColumnFilterDirective(_, ColumnFilterFeature, ColumnSortFeature, ColumnSortDirectionProvider){
         return{
@@ -2440,4 +2281,165 @@
     angular
         .module('mdDataTable')
         .directive('mdtDropdownColumnFilter', mdtDropdownColumnFilterDirective);
+})();
+(function() {
+    'use strict';
+
+    mdtColumnSelectorDirective.$inject = ['ColumnSelectorFeature', 'ColumnFilterFeature', 'PaginatorTypeProvider'];
+    function mdtColumnSelectorDirective(ColumnSelectorFeature, ColumnFilterFeature, PaginatorTypeProvider){
+        return{
+            restrict: 'E',
+            templateUrl: '/main/templates/mdtColumnSelector.html',
+            scope: true,
+            link: function($scope, element){
+                ColumnSelectorFeature.positionElement(element);
+
+                $scope.headerRowsData = _.map($scope.dataStorage.header, function(item){
+                    //excluded content should also be in, since we use the index of the array to apply the changes. Do not exclude them.
+
+                    return {
+                        columnName: item.columnName,
+                        isVisible: item.columnSelectorFeature.isVisible,
+                        isExcluded: item.columnSelectorFeature.isExcluded
+                    };
+                });
+
+                //destroying scope doesn't remove element, since it belongs to the body directly
+                $scope.$on('$destroy', function(){
+                    element.remove();
+                });
+
+                $scope.checked = function (item) {
+                    return item.isVisible;
+                };
+
+                $scope.toggle = function (item) {
+                    item.isVisible = !item.isVisible;
+                };
+
+                $scope.selectAll = function($event){
+                    $event.preventDefault();
+
+                    _.each($scope.headerRowsData, function(item){
+                        if(item.isExcluded){
+                            return;
+                        }
+
+                        item.isVisible = true;
+                    });
+                };
+
+                $scope.clearAll = function($event){
+                    $event.preventDefault();
+
+                    _.each($scope.headerRowsData, function(item){
+                        if(item.isExcluded){
+                            return;
+                        }
+
+                        item.isVisible = false;
+                    });
+                };
+
+                $scope.isAllSelected = function(){
+                    var result = _.find($scope.headerRowsData, function(item){
+                        if(item.isExcluded){
+                            return false;
+                        }
+
+                        return item.isVisible === false;
+                    });
+
+                    return result ? false : true;
+                };
+
+                $scope.isNothingSelected = function(){
+                    var result = _.find($scope.headerRowsData, function(item){
+                        if(item.isExcluded){
+                            return false;
+                        }
+
+                        return item.isVisible === true;
+                    });
+
+                    return result ? false : true;
+                };
+
+                $scope.confirmCallback = function(params){
+                    var paginator = params.paginator;
+                    var isAnyResetHappened = false;
+
+                    _.each($scope.dataStorage.header, function(item, index){
+                        item.columnSelectorFeature.isVisible = $scope.headerRowsData[index].isVisible;
+
+                        if(!item.columnSelectorFeature.isVisible){
+                            var result = ColumnFilterFeature.resetFiltersForColumn($scope.dataStorage, index);
+
+                            if(result){
+                                isAnyResetHappened = true;
+                            }
+                        }
+                    });
+
+                    $scope.columnSelectorFeature.isActive = false;
+
+                    if(isAnyResetHappened){
+                        if(paginator.paginatorType === PaginatorTypeProvider.AJAX){
+                            paginator.getFirstPage();
+                        }else{
+                            // no support for non-ajax yet
+                        }
+                    }
+                };
+
+                $scope.cancelCallback = function(){
+                    $scope.columnSelectorFeature.isActive = false;
+                };
+            }
+        }
+    }
+
+    angular
+        .module('mdDataTable')
+        .directive('mdtColumnSelector', mdtColumnSelectorDirective);
+})();
+(function(){
+    'use strict';
+
+    mdtSortingIconsDirective.$inject = ['ColumnSortDirectionProvider'];
+    function mdtSortingIconsDirective(ColumnSortDirectionProvider){
+        return {
+            restrict: 'E',
+            templateUrl: '/main/templates/cells/generateSortingIcons.html',
+            scope: {
+                data: '=',
+                size: '@'
+            },
+            link: function($scope){
+                $scope.ColumnSortDirectionProvider = ColumnSortDirectionProvider;
+            }
+        };
+    }
+
+    angular
+        .module('mdDataTable')
+        .directive('mdtSortingIcons', mdtSortingIconsDirective);
+}());
+(function(){
+    'use strict';
+
+    /**
+     * @name ColumnSortDirectionProvider
+     * @returns possible values for different type of paginators
+     *
+     * @describe Representing the possible paginator types.
+     */
+    var ColumnSortDirectionProvider = {
+        ASC : 'asc',
+        DESC : 'desc'
+    };
+
+    angular
+        .module('mdDataTable')
+        .value('ColumnSortDirectionProvider', ColumnSortDirectionProvider);
 })();
