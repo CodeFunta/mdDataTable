@@ -10,8 +10,9 @@
             this.$scope.onCheckboxChange = _.bind(this.onCheckboxChange, this);
         }
 
-        SelectableRowsFeature.prototype.onCheckboxChange = function(){
+        SelectableRowsFeature.prototype.onCheckboxChange = function($event){
             var that = this;
+            $event.preventDefault();
             // we need to push it to the event loop to make it happen last
             // (e.g.: all the elements can be selected before we call the callback)
             $timeout(function(){
