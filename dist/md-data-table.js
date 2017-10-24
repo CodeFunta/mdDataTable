@@ -944,8 +944,9 @@
             this.$scope.onCheckboxChange = _.bind(this.onCheckboxChange, this);
         }
 
-        SelectableRowsFeature.prototype.onCheckboxChange = function(){
+        SelectableRowsFeature.prototype.onCheckboxChange = function($event){
             var that = this;
+            $event.preventDefault();
             // we need to push it to the event loop to make it happen last
             // (e.g.: all the elements can be selected before we call the callback)
             $timeout(function(){
@@ -2287,47 +2288,6 @@
         .module('mdDataTable')
         .directive('mdtDropdownColumnFilter', mdtDropdownColumnFilterDirective);
 })();
-(function(){
-    'use strict';
-
-    mdtSortingIconsDirective.$inject = ['ColumnSortDirectionProvider'];
-    function mdtSortingIconsDirective(ColumnSortDirectionProvider){
-        return {
-            restrict: 'E',
-            templateUrl: '/main/templates/cells/generateSortingIcons.html',
-            scope: {
-                data: '=',
-                size: '@'
-            },
-            link: function($scope){
-                $scope.ColumnSortDirectionProvider = ColumnSortDirectionProvider;
-            }
-        };
-    }
-
-    angular
-        .module('mdDataTable')
-        .directive('mdtSortingIcons', mdtSortingIconsDirective);
-}());
-(function(){
-    'use strict';
-
-    /**
-     * @name ColumnSortDirectionProvider
-     * @returns possible values for different type of paginators
-     *
-     * @describe Representing the possible paginator types.
-     */
-    var ColumnSortDirectionProvider = {
-        ASC : 'asc',
-        DESC : 'desc'
-    };
-
-    angular
-        .module('mdDataTable')
-        .value('ColumnSortDirectionProvider', ColumnSortDirectionProvider);
-})();
-
 (function() {
     'use strict';
 
@@ -2448,4 +2408,44 @@
     angular
         .module('mdDataTable')
         .directive('mdtColumnSelector', mdtColumnSelectorDirective);
+})();
+(function(){
+    'use strict';
+
+    mdtSortingIconsDirective.$inject = ['ColumnSortDirectionProvider'];
+    function mdtSortingIconsDirective(ColumnSortDirectionProvider){
+        return {
+            restrict: 'E',
+            templateUrl: '/main/templates/cells/generateSortingIcons.html',
+            scope: {
+                data: '=',
+                size: '@'
+            },
+            link: function($scope){
+                $scope.ColumnSortDirectionProvider = ColumnSortDirectionProvider;
+            }
+        };
+    }
+
+    angular
+        .module('mdDataTable')
+        .directive('mdtSortingIcons', mdtSortingIconsDirective);
+}());
+(function(){
+    'use strict';
+
+    /**
+     * @name ColumnSortDirectionProvider
+     * @returns possible values for different type of paginators
+     *
+     * @describe Representing the possible paginator types.
+     */
+    var ColumnSortDirectionProvider = {
+        ASC : 'asc',
+        DESC : 'desc'
+    };
+
+    angular
+        .module('mdDataTable')
+        .value('ColumnSortDirectionProvider', ColumnSortDirectionProvider);
 })();
