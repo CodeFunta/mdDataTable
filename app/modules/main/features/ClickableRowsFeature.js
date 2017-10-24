@@ -12,10 +12,15 @@
 
         ClickableRowsFeature.prototype.rowClickCallBackHandler = function (event, row) {
             var that = this;
+            //reset all checkboxes
+            that.ctrl.dataStorage.setAllRowsSelected(false, $scope.isPaginationEnabled());
+            //select current row
+            row.optionList.selected = true;
+            
             // we need to push it to the event loop to make it happen last
             // (e.g.: all the elements can be selected before we call the callback)
             $timeout(function () {
-                that.$scope.clickedRowCallback({ rowId: row.rowId });
+                that.$scope.clickedRowCallback({ rowId: row.rowId, row: row });
             }, 0);
         };
 
