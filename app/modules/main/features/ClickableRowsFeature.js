@@ -13,7 +13,7 @@
         ClickableRowsFeature.prototype.rowClickCallBackHandler = function (event, row) {
             var that = this;
             //reset all checkboxes
-            that.ctrl.dataStorage.setAllRowsSelected(false, $scope.isPaginationEnabled());
+            that.ctrl.dataStorage.setAllRowsSelected(false, that.$scope.isPaginationEnabled());
             //select current row
             row.optionList.selected = true;
             
