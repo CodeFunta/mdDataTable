@@ -8,6 +8,7 @@
             this.ctrl = params.ctrl;
 
             this.$scope.rowClickCallBackHandler = _.bind(this.rowClickCallBackHandler, this);
+            this.$scope.rowDblClickCallBackHandler = _.bind(this.rowDblClickCallBackHandler, this);
         }
 
         ClickableRowsFeature.prototype.rowClickCallBackHandler = function (event, row) {
@@ -21,6 +22,15 @@
             // (e.g.: all the elements can be selected before we call the callback)
             $timeout(function () {
                 that.$scope.clickedRowCallback({ rowId: row.rowId, row: row });
+            }, 0);
+        };
+
+        ClickableRowsFeature.prototype.rowDblClickCallBackHandler = function (event, row) {
+            var that = this;
+           // we need to push it to the event loop to make it happen last
+            // (e.g.: all the elements can be selected before we call the callback)
+            $timeout(function () {
+                that.$scope.dblClickedRowCallback({ rowId: row.rowId, row: row });
             }, 0);
         };
 

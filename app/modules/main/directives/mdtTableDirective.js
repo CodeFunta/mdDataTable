@@ -131,6 +131,7 @@
                 deleteRowCallback: '&',
                 selectedRowCallback: '&',
                 clickedRowCallback: '&',
+                dlbClickedRowCallback: '&',
                 saveRowCallback: '&',
                 animateSortIcon: '=',
                 rippleEffect: '=',
