@@ -242,7 +242,7 @@
                 deleteRowCallback: '&',
                 selectedRowCallback: '&',
                 clickedRowCallback: '&',
-                dlbClickedRowCallback: '&',
+                dblClickedRowCallback: '&',
                 saveRowCallback: '&',
                 animateSortIcon: '=',
                 rippleEffect: '=',
