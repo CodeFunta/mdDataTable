@@ -16,9 +16,10 @@
             var that = this;
             if (!event.ctrlKey && !event.shiftKey) {
                 //reset all checkboxes
+                var isSelected = row.optionList.selected;
                 that.ctrl.dataStorage.setAllRowsSelected(false, that.$scope.isPaginationEnabled());
                 //toggle current row
-                row.optionList.selected = !row.optionList.selected;
+                row.optionList.selected = !isSelected;
                 that.selectionPivot = row;
                 // we need to push it to the event loop to make it happen last
                 // (e.g.: all the elements can be selected before we call the callback)
