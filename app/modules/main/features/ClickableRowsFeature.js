@@ -26,20 +26,25 @@
                 $timeout(function () {
                     that.$scope.clickedRowCallback({ rowId: row.rowId, row: row });
                 }, 0);
-                return;
+                return false;
             }
             if (event.ctrlKey && event.shiftKey) {
+                event.preventDefault();
                 that.selectRowsBetweenIndexes(that.ctrl.dataStorage.getRowIndex(that.selectionPivot), that.ctrl.dataStorage.getRowIndex(row));
-                return;
+                return false;
             }
+            event.preventDefault();
+            
             if (event.ctrlKey) {
                 row.optionList.selected = !row.optionList.selected;
                 that.selectionPivot = row;
+
             }
             if (event.shiftKey) {
                 that.ctrl.dataStorage.setAllRowsSelected(false, that.$scope.isPaginationEnabled());
                 that.selectRowsBetweenIndexes(that.ctrl.dataStorage.getRowIndex(that.selectionPivot), that.ctrl.dataStorage.getRowIndex(row));
             }
+            return false;
 
         };
 
