@@ -830,6 +830,13 @@
             return rawRowData;
         };
 
+        TableDataStorageService.prototype.getRowIndex = function(row){
+            if (!row) {
+                return -1;
+            }
+            return this.storage.indexOf(row);
+        };
+
         return {
             getInstance: function(){
                 return new TableDataStorageService();
@@ -850,6 +857,7 @@
         function ClickableRowsFeature(params) {
             this.$scope = params.$scope;
             this.ctrl = params.ctrl;
+            this.selectionPivot = null;
 
             this.$scope.rowClickCallBackHandler = _.bind(this.rowClickCallBackHandler, this);
             this.$scope.rowDblClickCallBackHandler = _.bind(this.rowDblClickCallBackHandler, this);
@@ -857,21 +865,47 @@
 
         ClickableRowsFeature.prototype.rowClickCallBackHandler = function (event, row) {
             var that = this;
-            //reset all checkboxes
-            that.ctrl.dataStorage.setAllRowsSelected(false, that.$scope.isPaginationEnabled());
-            //select current row
-            row.optionList.selected = true;
-            
-            // we need to push it to the event loop to make it happen last
-            // (e.g.: all the elements can be selected before we call the callback)
-            $timeout(function () {
-                that.$scope.clickedRowCallback({ rowId: row.rowId, row: row });
-            }, 0);
+            if (!event.ctrlKey && !event.shiftKey) {
+                //reset all checkboxes
+                that.ctrl.dataStorage.setAllRowsSelected(false, that.$scope.isPaginationEnabled());
+                //toggle current row
+                row.optionList.selected = !row.optionList.selected;
+                that.selectionPivot = row;
+                // we need to push it to the event loop to make it happen last
+                // (e.g.: all the elements can be selected before we call the callback)
+                $timeout(function () {
+                    that.$scope.clickedRowCallback({ rowId: row.rowId, row: row });
+                }, 0);
+                return;
+            }
+            if (event.ctrlKey && event.shiftKey) {
+                that.selectRowsBetweenIndexes(that.ctrl.dataStorage.getRowIndex(that.selectionPivot), that.ctrl.dataStorage.getRowIndex(row));
+                return;
+            }
+            if (event.ctrlKey) {
+                row.optionList.selected = !row.optionList.selected;
+                that.selectionPivot = row;
+            }
+            if (event.shiftKey) {
+                that.ctrl.dataStorage.setAllRowsSelected(false, that.$scope.isPaginationEnabled());
+                that.selectRowsBetweenIndexes(that.ctrl.dataStorage.getRowIndex(that.selectionPivot), that.ctrl.dataStorage.getRowIndex(row));
+            }
+
         };
 
+        ClickableRowsFeature.prototype.selectRowsBetweenIndexes = function (ia, ib) {
+            var that = this;
+            var bot = Math.min(ia, ib);
+            var top = Math.max(ia, ib);
+
+            for (var i = bot; i <= top; i++) {
+                var row = that.ctrl.dataStorage.getRowData(i);
+                row.optionList.selected = true;
+            }
+        }
         ClickableRowsFeature.prototype.rowDblClickCallBackHandler = function (event, row) {
             var that = this;
-           // we need to push it to the event loop to make it happen last
+            // we need to push it to the event loop to make it happen last
             // (e.g.: all the elements can be selected before we call the callback)
             $timeout(function () {
                 that.$scope.dblClickedRowCallback({ rowId: row.rowId, row: row });

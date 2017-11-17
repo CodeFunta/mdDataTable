@@ -130,6 +130,13 @@
             return rawRowData;
         };
 
+        TableDataStorageService.prototype.getRowIndex = function(row){
+            if (!row) {
+                return -1;
+            }
+            return this.storage.indexOf(row);
+        };
+
         return {
             getInstance: function(){
                 return new TableDataStorageService();
