@@ -899,8 +899,10 @@
             var top = Math.max(ia, ib);
 
             for (var i = bot; i <= top; i++) {
-                var row = that.ctrl.dataStorage.getRowData(i);
-                row.optionList.selected = true;
+                var opt = that.ctrl.dataStorage.getRowOptions(i);
+                if(opt) {
+                    opt.selected = true;
+                }
             }
         }
         ClickableRowsFeature.prototype.rowDblClickCallBackHandler = function (event, row) {
