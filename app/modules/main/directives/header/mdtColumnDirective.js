@@ -66,6 +66,7 @@
             scope: {
                 alignRule: '@',
                 columnDefinition: '@',
+                columnHeader: '@',
                 columnSort: '=?',
                 columnFilter: '=?',
                 excludeFromColumnSelector: '=?',
@@ -77,7 +78,11 @@
 
                 transclude(function (clone) {
                     // directive creates an isolate scope so use parent scope to resolve variables.
-                    var cellValue = $interpolate(clone.html())($scope.$parent);
+                    var html = clone.html();
+                    if (angular.isUndefined(html)) {//if no text for transclution than try get columnHeader prop. or columnDefinition prop
+                        html = $scope.columnHeader || $scope.columnDefinition;
+                    }
+                    var cellValue = html? $interpolate(html)($scope.$parent):'';
                     var cellDataToStore = {
                         alignRule: $scope.alignRule,
                         columnDefinition: $scope.columnDefinition,
