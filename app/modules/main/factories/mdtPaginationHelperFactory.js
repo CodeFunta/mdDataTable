@@ -29,7 +29,14 @@
             } else {
                 this.showFirstLast = true;
             }
-            
+
+            if (params.paginationSetting &&
+                params.paginationSetting.hasOwnProperty('scrollTop')) {
+                this.scrollTop = params.paginationSetting.scrollTop;
+            } else {
+                this.scrollTop = true;
+            }
+
             this.rowsPerPage = this.rowsPerPageValues[0];
             this.page = 1;
             this.totalResultCount = this.dataStorage.storage.length;
