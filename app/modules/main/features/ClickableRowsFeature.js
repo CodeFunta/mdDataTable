@@ -25,7 +25,12 @@
                 // (e.g.: all the elements can be selected before we call the callback)
                 $timeout(function () {
                     that.$scope.clickedRowCallback({ rowId: row.rowId, row: row });
+
+                    // that.$scope.selectedRowCallback({
+                    //     rows: that.ctrl.dataStorage.getSelectedRows()
+                    // });
                 }, 0);
+                
                 return false;
             }
             if (event.ctrlKey && event.shiftKey) {
