@@ -22,6 +22,20 @@
                 this.rowsPerPageValues = [10, 20, 30, 50, 100];
             }
 
+            if (params.paginationSetting &&
+                params.paginationSetting.hasOwnProperty('showPrevNext')) {
+                this.showPrevNext = params.paginationSetting.showPrevNext;
+            } else {
+                this.showPrevNext = true;
+            }
+
+            if (params.paginationSetting &&
+                params.paginationSetting.hasOwnProperty('showFirstLast')) {
+                this.showFirstLast = params.paginationSetting.showFirstLast;
+            } else {
+                this.showFirstLast = true;
+            }
+
             this.rowsPerPage = this.rowsPerPageValues[0];
             this.page = 1;
             this.totalResultCount = 0;

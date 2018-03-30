@@ -1,8 +1,5 @@
 <div class="mdt-footer" layout="row" ng-show="isPaginationEnabled()">
-    <div class="mdt-pagination"
-         layout="row"
-         layout-align="end center"
-         flex>
+    <div class="mdt-pagination" layout="row" layout-align="end center" flex>
 
         <span layout-margin>{{mdtTranslations.rowsPerPage}}</span>
         <md-input-container>
@@ -12,15 +9,17 @@
         </md-input-container>
 
         <span layout-margin>
-            <span ng-if="mdtPaginationHelper.getTotalRowsCount() != 0" style="margin:0;">{{mdtPaginationHelper.getStartRowIndex()+1}}-</span>{{mdtPaginationHelper.getEndRowIndex()+1}} of {{mdtPaginationHelper.getTotalRowsCount()}}
+            <span ng-if="mdtPaginationHelper.getTotalRowsCount() != 0" style="margin:0;">{{mdtPaginationHelper.getStartRowIndex()+1}}-</span>{{mdtPaginationHelper.getEndRowIndex()+1}} {{mdtTranslations.rowsFromTotal
+            || 'of'}} {{mdtPaginationHelper.getTotalRowsCount()}}
         </span>
-
-        <md-button class="md-icon-button md-primary" ng-class="{'md-inactive': !mdtPaginationHelper.hasPreviousPage()}" aria-label="Previous page" ng-click="mdtPaginationHelper.previousPage()">
+        <paging page="mdtPaginationHelper.page" paging-action="mdtPaginationHelper.fetchPage(page)" page-size="mdtPaginationHelper.rowsPerPage" total="mdtPaginationHelper.totalResultCount" show-prev-next="mdtPaginationHelper.showPrevNext" show-first-last="mdtPaginationHelper.showFirstLast">
+        </paging>
+        <!-- <md-button class="md-icon-button md-primary" ng-class="{'md-inactive': !mdtPaginationHelper.hasPreviousPage()}" aria-label="Previous page" ng-click="mdtPaginationHelper.previousPage()">
             <ng-md-icon icon="keyboard_arrow_left" size="24"></ng-md-icon>
         </md-button>
 
         <md-button class="md-icon-button md-primary" ng-class="{'md-inactive': !mdtPaginationHelper.hasNextPage()}" aria-label="Next page" ng-click="mdtPaginationHelper.nextPage()">
             <ng-md-icon icon="keyboard_arrow_right" size="24"></ng-md-icon>
-        </md-button>
+        </md-button> -->
     </div>
 </div>

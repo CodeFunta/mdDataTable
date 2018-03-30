@@ -16,9 +16,23 @@
             }else{
                 this.rowsPerPageValues = [10,20,30,50,100];
             }
+            if (params.paginationSetting &&
+                params.paginationSetting.hasOwnProperty('showPrevNext')) {
+                this.showPrevNext = params.paginationSetting.showPrevNext;
+            } else {
+                this.showPrevNext = true;
+            }
 
+            if (params.paginationSetting &&
+                params.paginationSetting.hasOwnProperty('showFirstLast')) {
+                this.showFirstLast = params.paginationSetting.showFirstLast;
+            } else {
+                this.showFirstLast = true;
+            }
+            
             this.rowsPerPage = this.rowsPerPageValues[0];
             this.page = 1;
+            this.totalResultCount = this.dataStorage.storage.length;
         }
 
         mdtPaginationHelper.prototype.calculateVisibleRows = function (){
@@ -67,6 +81,23 @@
             if(this.hasNextPage()){
                 this.page++;
             }
+        };
+
+        mdtPaginationHelper.prototype.fetchPage = function (page) {
+            if (page) {
+                this.page = page;
+            } else {
+                page = this.page;
+            }
+            var totalPages = Math.ceil(this.getTotalRowsCount() / this.rowsPerPage);
+            if (page > totalPages) {
+                this.page = totalPages;
+            }
+            if(page < 0)
+            {
+                this.page = 1;
+            }
+           
         };
 
         mdtPaginationHelper.prototype.hasNextPage = function(){
