@@ -12,8 +12,8 @@
             <span ng-if="mdtPaginationHelper.getTotalRowsCount() != 0" style="margin:0;">{{mdtPaginationHelper.getStartRowIndex()+1}}-</span>{{mdtPaginationHelper.getEndRowIndex()+1}} {{mdtTranslations.rowsFromTotal
             || 'of'}} {{mdtPaginationHelper.getTotalRowsCount()}}
         </span>
-        <paging page="mdtPaginationHelper.page" paging-action="mdtPaginationHelper.fetchPage(page)" page-size="mdtPaginationHelper.rowsPerPage" total="mdtPaginationHelper.totalResultCount" show-prev-next="mdtPaginationHelper.showPrevNext" show-first-last="mdtPaginationHelper.showFirstLast">
-        </paging>
+        <mdt-paging page="mdtPaginationHelper.page" paging-action="mdtPaginationHelper.fetchPage(page)" page-size="mdtPaginationHelper.rowsPerPage" total="mdtPaginationHelper.totalResultCount" show-prev-next="mdtPaginationHelper.showPrevNext" show-first-last="mdtPaginationHelper.showFirstLast">
+        </mdt-paging>
         <!-- <md-button class="md-icon-button md-primary" ng-class="{'md-inactive': !mdtPaginationHelper.hasPreviousPage()}" aria-label="Previous page" ng-click="mdtPaginationHelper.previousPage()">
             <ng-md-icon icon="keyboard_arrow_left" size="24"></ng-md-icon>
         </md-button>
