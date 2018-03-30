@@ -36,7 +36,9 @@
             link: fieldLink,
 
             // Assign the angular directive template HTML
-            template: fieldTemplate,
+            //template: fieldTemplate,
+            templateUrl: '/main/templates/mdtPaging.html',
+            transclude: true,
 
             // Assign the angular scope attribute formatting
             scope: {
@@ -129,7 +131,7 @@
             scope.dots = scope.dots || '...';
 
             scope.ulClass = scope.ulClass || 'pagination';
-            scope.activeClass = scope.activeClass || 'active';
+            scope.activeClass = scope.activeClass || 'md-accent';
             scope.disabledClass = scope.disabledClass || 'disabled';
 
             scope.textFirst = scope.textFirst || '<<';
