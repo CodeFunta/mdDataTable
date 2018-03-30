@@ -1,7 +1,7 @@
 {
   "name": "md-data-table",
-  "version": "2.2.0",
-  "author": "Istvan Fodor <programtervezo@gmail.com>",
+  "version": "2.2.1",
+  "author": "Istvan Fodor <programtervezo@gmail.com>,anlitv",
   "registry": "github",
   "repository": {
     "type": "git",
