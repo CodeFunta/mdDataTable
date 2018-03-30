@@ -954,6 +954,11 @@
                 that.ctrl.dataStorage.setAllRowsSelected(false, that.$scope.isPaginationEnabled());
                 that.selectRowsBetweenIndexes(that.ctrl.dataStorage.getRowIndex(that.selectionPivot), that.ctrl.dataStorage.getRowIndex(row));
             }
+            $timeout(function () {
+                that.$scope.selectedRowCallback({
+                    rows: that.ctrl.dataStorage.getSelectedRows()
+                });
+            }, 0);
             return false;
 
         };
@@ -3066,6 +3071,25 @@
 (function(){
     'use strict';
 
+    /**
+     * @name ColumnSortDirectionProvider
+     * @returns possible values for different type of paginators
+     *
+     * @describe Representing the possible paginator types.
+     */
+    var ColumnSortDirectionProvider = {
+        ASC : 'asc',
+        DESC : 'desc'
+    };
+
+    angular
+        .module('mdDataTable')
+        .value('ColumnSortDirectionProvider', ColumnSortDirectionProvider);
+})();
+
+(function(){
+    'use strict';
+
     mdtSortingIconsDirective.$inject = ['ColumnSortDirectionProvider'];
     function mdtSortingIconsDirective(ColumnSortDirectionProvider){
         return {
@@ -3085,21 +3109,3 @@
         .module('mdDataTable')
         .directive('mdtSortingIcons', mdtSortingIconsDirective);
 }());
-(function(){
-    'use strict';
-
-    /**
-     * @name ColumnSortDirectionProvider
-     * @returns possible values for different type of paginators
-     *
-     * @describe Representing the possible paginator types.
-     */
-    var ColumnSortDirectionProvider = {
-        ASC : 'asc',
-        DESC : 'desc'
-    };
-
-    angular
-        .module('mdDataTable')
-        .value('ColumnSortDirectionProvider', ColumnSortDirectionProvider);
-})();

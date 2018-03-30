@@ -44,6 +44,11 @@
                 that.ctrl.dataStorage.setAllRowsSelected(false, that.$scope.isPaginationEnabled());
                 that.selectRowsBetweenIndexes(that.ctrl.dataStorage.getRowIndex(that.selectionPivot), that.ctrl.dataStorage.getRowIndex(row));
             }
+            $timeout(function () {
+                that.$scope.selectedRowCallback({
+                    rows: that.ctrl.dataStorage.getSelectedRows()
+                });
+            }, 0);
             return false;
 
         };
