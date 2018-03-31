@@ -147,7 +147,7 @@
             },
             controller: function mdtTable($scope) {
                 var vm = this;
-
+                vm.tableId = $scope.tableId = _.uniqueId('mdtTbl');
                 $scope.rippleEffectCallback = function () {
                     return $scope.rippleEffect ? $scope.rippleEffect : false;
                 };
@@ -163,6 +163,7 @@
                 // initialization of the storage service
                 function _initTableStorage() {
                     vm.dataStorage = TableDataStorageFactory.getInstance();
+                    vm.dataStorage.tableId = vm.tableId;
                 }
 
                 // set translations or fallback to a default value

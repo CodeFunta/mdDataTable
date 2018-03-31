@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    function mdtAjaxPaginationHelperFactory(ColumnFilterFeature, ColumnSortFeature, PaginatorTypeProvider, _) {
+    function mdtAjaxPaginationHelperFactory(ColumnFilterFeature, ColumnSortFeature, PaginatorTypeProvider, _, $location, $anchorScroll) {
 
         function mdtAjaxPaginationHelper(params) {
             this.paginatorType = PaginatorTypeProvider.AJAX;
@@ -143,6 +143,8 @@
 
                     that.isLoadError = false;
                     that.isLoading = false;
+                    $location.hash(that.dataStorage.tableId);
+                    $anchorScroll();
 
                 }, function () {
                     that.dataStorage.storage = [];
