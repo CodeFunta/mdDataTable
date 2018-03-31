@@ -147,7 +147,7 @@
             },
             controller: function mdtTable($scope) {
                 var vm = this;
-                vm.tableId = $scope.tableId = _.uniqueId('mdtTbl');
+                vm.tableId = $scope.tableId = _.uniqueId('tbl-');
                 $scope.rippleEffectCallback = function () {
                     return $scope.rippleEffect ? $scope.rippleEffect : false;
                 };
