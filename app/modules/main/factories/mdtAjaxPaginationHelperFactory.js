@@ -40,7 +40,7 @@
                 params.paginationSetting.hasOwnProperty('scrollTop')) {
                 this.scrollTop = params.paginationSetting.scrollTop;
             } else {
-                this.scrollTop = true;
+                this.scrollTop = false;
             }
 
             this.rowsPerPage = this.rowsPerPageValues[0];
@@ -143,8 +143,11 @@
 
                     that.isLoadError = false;
                     that.isLoading = false;
-                    $location.hash(that.dataStorage.tableId);
-                    $anchorScroll();
+                    if (that.scrollTop) {
+                        $location.hash(that.dataStorage.tableId);
+                        $anchorScroll();    
+                    }
+                    
 
                 }, function () {
                     that.dataStorage.storage = [];

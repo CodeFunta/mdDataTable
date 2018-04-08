@@ -34,7 +34,7 @@
                 params.paginationSetting.hasOwnProperty('scrollTop')) {
                 this.scrollTop = params.paginationSetting.scrollTop;
             } else {
-                this.scrollTop = true;
+                this.scrollTop = false;
             }
 
             this.rowsPerPage = this.rowsPerPageValues[0];
@@ -103,9 +103,11 @@
             if (page < 0) {
                 this.page = 1;
             }
-
-            $location.hash(this.dataStorage.tableId);
-            $anchorScroll();
+            if (this.scrollTop) {
+                $location.hash(this.dataStorage.tableId);
+                $anchorScroll();
+            }
+            
         };
 
         mdtPaginationHelper.prototype.hasNextPage = function () {
