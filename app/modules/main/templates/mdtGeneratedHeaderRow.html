@@ -4,10 +4,10 @@
     <!-- TODO: fix text-align:left, in theory it should not be there to make it work -->
     <th class="checkboxCell"
         style="text-align:left;"
-        ng-show="selectableRows && multiSelection"
+        ng-show="selectableRows"
         mdt-select-all-rows-handler>
 
-        <md-checkbox aria-label="select all" ng-model="selectAllRows" ng-change="onCheckboxChange()"></md-checkbox>
+        <md-checkbox aria-label="select all" ng-model="selectAllRows" ng-change="onCheckboxChange()" ng-if="multiSelection"></md-checkbox>
     </th>
 
     <th class="column"
