@@ -17,6 +17,9 @@
             } else {    // IE6-8
                  $event.cancelBubble = true;
             }
+            if (!that.$scope.multiSelection) {
+                that.ctrl.dataStorage.setAllRowsSelected(false, that.$scope.isPaginationEnabled());
+            }
         };
         SelectableRowsFeature.prototype.onCheckboxChange = function () {
             var that = this;
@@ -24,6 +27,7 @@
             // we need to push it to the event loop to make it happen last
             // (e.g.: all the elements can be selected before we call the callback)
             $timeout(function () {
+               
                 that.$scope.selectedRowCallback({
                     rows: that.ctrl.dataStorage.getSelectedRows()
                 });

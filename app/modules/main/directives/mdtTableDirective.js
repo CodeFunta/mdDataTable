@@ -127,6 +127,7 @@
             scope: {
                 tableCard: '=',
                 selectableRows: '=',
+                multiSelection: '=',
                 alternateHeaders: '=',
                 deleteRowCallback: '&',
                 selectedRowCallback: '&',
