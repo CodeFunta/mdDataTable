@@ -219,7 +219,7 @@
                             });
                         });
                         var className = $scope.mdtRow['table-row-class-name'] ? $scope.mdtRow['table-row-class-name'](row) : false;
-                        vm.dataStorage.addRowData(rowId, columnValues,className,unshift);
+                        return vm.dataStorage.addRowData(rowId, columnValues,className,unshift);
                     });
                 }
             },
