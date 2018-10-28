@@ -144,7 +144,8 @@
                 virtualRepeat: '=',
                 mdtTriggerRequest: '&?',
                 mdtTranslations: '=?',
-                mdtLoadingIndicator: '=?'
+                mdtLoadingIndicator: '=?',
+                mdtStorageModel: "="
             },
             controller: function mdtTable($scope) {
                 var vm = this;
@@ -165,6 +166,7 @@
                 function _initTableStorage() {
                     vm.dataStorage = TableDataStorageFactory.getInstance();
                     vm.dataStorage.tableId = vm.tableId;
+                    $scope.mdtStorageModel = vm.dataStorage;
                 }
 
                 // set translations or fallback to a default value
