@@ -28,8 +28,7 @@
                 },
                 data: rowArray
             };
-            var array_func = unshift? this.storage.unshift: this.storage.push;
-            array_func(data);
+            unshift? this.storage.unshift(data): this.storage.push(data);
         };
 
         TableDataStorageService.prototype.getRowData = function(index){
