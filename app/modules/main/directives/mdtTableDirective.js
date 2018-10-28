@@ -166,7 +166,9 @@
                 function _initTableStorage() {
                     vm.dataStorage = TableDataStorageFactory.getInstance();
                     vm.dataStorage.tableId = vm.tableId;
+                    vm.dataStorage.addRawDataToStorage = _addRawDataToStorage;
                     $scope.mdtStorageModel = vm.dataStorage;
+
                 }
 
                 // set translations or fallback to a default value
@@ -198,7 +200,7 @@
                     }
                 }
 
-                function _addRawDataToStorage(data) {
+                function _addRawDataToStorage(data,unshift) {
                     var rowId;
                     var columnValues = [];
                     _.each(data, function (row) {
@@ -215,8 +217,8 @@
                                 value: _.get(row, columnKey)
                             });
                         });
-
-                        vm.dataStorage.addRowData(rowId, columnValues);
+                        var className = $scope.mdtRow['table-row-class-name'] ? $scope.mdtRow['table-row-class-name'](row) : false;
+                        vm.dataStorage.addRowData(rowId, columnValues,className,unshift);
                     });
                 }
             },

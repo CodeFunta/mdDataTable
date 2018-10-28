@@ -13,13 +13,12 @@
             this.header.push(ops);
         };
 
-        TableDataStorageService.prototype.addRowData = function(explicitRowId, rowArray, className){
+        TableDataStorageService.prototype.addRowData = function(explicitRowId, rowArray, className,unshift){
             if(!(rowArray instanceof Array)){
                 $log.error('`rowArray` parameter should be array');
                 return;
             }
-
-            this.storage.push({
+            var data = {
                 rowId: explicitRowId,
                 optionList: {
                     selected: false,
@@ -28,7 +27,9 @@
                     className: className || false
                 },
                 data: rowArray
-            });
+            };
+            var array_func = unshift? this.storage.unshift: this.storage.push;
+            array_func(data);
         };
 
         TableDataStorageService.prototype.getRowData = function(index){
