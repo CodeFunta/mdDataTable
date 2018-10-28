@@ -29,6 +29,7 @@
                 data: rowArray
             };
             unshift? this.storage.unshift(data): this.storage.push(data);
+            return data;
         };
 
         TableDataStorageService.prototype.getRowData = function(index){
