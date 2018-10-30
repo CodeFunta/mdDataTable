@@ -9,15 +9,15 @@
 
                 //for performance reasons we keep the parsedValue over here, since we need to reuse it twice.
                 var parsedValue;
-
+                var metaKey = '#38105340012378476#';
                 $scope.$watch(function(){
                     //this needs to be like that. Passing only `attr.mdtAddHtmlContentToCell` will cause digest to go crazy 10 times.
                     // so we has to say explicitly that we only want to watch the content and nor the attributes, or the additional metadata.
                     parsedValue = $parse(attr.mdtAddHtmlContentToCell)($scope);
 
-                    return parsedValue.value;
+                    return parsedValue.value + metaKey +parsedValue.rowId;//if rowId changed
 
-                }, function(val){
+                }, function(valwithmeta){
                     element.empty();
 
                     // ctrl doesn't exist on the first row, making html content impossible to show up.
@@ -35,14 +35,14 @@
                         }
 
                         localScope.clientScope = customCellData.scope;
-                        localScope.value = val;
+                        localScope.value = parsedValue.value;
 
                         $compile(clonedHtml)(localScope, function(cloned){
                             element.append(cloned);
                         });
 
                     }else{
-                        element.append(val);
+                        element.append(parsedValue.value);
                     }
 
                 }, false);
