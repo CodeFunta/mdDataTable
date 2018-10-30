@@ -214,6 +214,7 @@
                                     editableField: false
                                 },
                                 rowId: rowId,
+                                origData: row,
                                 columnKey: columnKey,
                                 value: _.get(row, columnKey)
                             });

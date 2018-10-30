@@ -34,6 +34,10 @@
                             localScope.rowId = parsedValue.rowId;
                         }
 
+                        if(parsedValue.origData){
+                            localScope.obj = origData;
+                        }
+
                         localScope.clientScope = customCellData.scope;
                         localScope.value = parsedValue.value;
 
