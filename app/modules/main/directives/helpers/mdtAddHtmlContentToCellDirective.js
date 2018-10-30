@@ -35,7 +35,7 @@
                         }
 
                         if(parsedValue.origData){
-                            localScope.obj = origData;
+                            localScope.obj = parsedValue.origData;
                         }
 
                         localScope.clientScope = customCellData.scope;
