@@ -15,7 +15,8 @@
                     // so we has to say explicitly that we only want to watch the content and nor the attributes, or the additional metadata.
                     parsedValue = $parse(attr.mdtAddHtmlContentToCell)($scope);
 
-                    return parsedValue.value + metaKey +parsedValue.rowId;//if rowId changed
+                    //return parsedValue.value + metaKey +parsedValue.rowId;//if rowId changed
+                    return parsedValue.origData || parsedValue.value;
 
                 }, function(valwithmeta){
                     element.empty();
@@ -49,7 +50,7 @@
                         element.append(parsedValue.value);
                     }
 
-                }, false);
+                }, true);
                 // issue with false value. If fields are editable then it won't reflect the change.
             }
         };
