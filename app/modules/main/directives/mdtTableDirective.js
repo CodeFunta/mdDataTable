@@ -145,7 +145,7 @@
                 mdtTriggerRequest: '&?',
                 mdtTranslations: '=?',
                 mdtLoadingIndicator: '=?',
-                mdtStorageModel: "="
+                mdtStorageModel: "=?"
             },
             controller: function mdtTable($scope) {
                 var vm = this;
