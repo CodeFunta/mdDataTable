@@ -16,9 +16,13 @@
                     parsedValue = $parse(attr.mdtAddHtmlContentToCell)($scope);
 
                     //return parsedValue.value + metaKey +parsedValue.rowId;//if rowId changed
-                    return parsedValue.origData || parsedValue.value;
+                    if(parsedValue.columnKey && ctrl && ctrl.dataStorage.customCells[parsedValue.columnKey])
+                    {
+                        return parsedValue.origData;
+                    }
+                    return parsedValue.value;
 
-                }, function(valwithmeta){
+                }, function(newvalue){
                     element.empty();
 
                     // ctrl doesn't exist on the first row, making html content impossible to show up.
@@ -40,7 +44,14 @@
                         }
 
                         localScope.clientScope = customCellData.scope;
-                        localScope.value = parsedValue.value;
+                        
+                        if (parsedValue.origData) {
+                            localScope.value = _.get(parsedValue.origData,parsedValue.columnKey);
+                        }
+                        else
+                        {
+                            localScope.value = parsedValue.value;
+                        }
 
                         $compile(clonedHtml)(localScope, function(cloned){
                             element.append(cloned);
@@ -50,7 +61,7 @@
                         element.append(parsedValue.value);
                     }
 
-                }, true);
+                }, angular.isObject(parsedValue.origData));
                 // issue with false value. If fields are editable then it won't reflect the change.
             }
         };
