@@ -45,12 +45,12 @@
 
                         localScope.clientScope = customCellData.scope;
                         
-                        if (parsedValue.origData) {
-                            localScope.value = _.get(parsedValue.origData,parsedValue.columnKey);
+                        if (parsedValue.origData && angular.isObject(newvalue)) {
+                            localScope.value = _.get(newvalue,parsedValue.columnKey);
                         }
                         else
                         {
-                            localScope.value = parsedValue.value;
+                            localScope.value = newvalue;
                         }
 
                         $compile(clonedHtml)(localScope, function(cloned){
@@ -61,7 +61,7 @@
                         element.append(parsedValue.value);
                     }
 
-                }, angular.isObject(parsedValue.origData));
+                }, true);
                 // issue with false value. If fields are editable then it won't reflect the change.
             }
         };
