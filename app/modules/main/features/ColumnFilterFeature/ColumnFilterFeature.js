@@ -148,7 +148,7 @@
             };
             
             element.css('position', 'absolute');
-            element.detach().appendTo('body');
+            document.getElementsByTagName('body')[0].appendChild(element.detach()[0]);
 
             element.css({
                 top: targetMetrics.top + 'px', 
